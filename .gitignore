@@ -58,3 +58,10 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# Custom Ignores
+
+Assets/Graphics/
+Assets/Animation/
+Assets/Mobile Toon Cars Free/
+Assets/devotid/
+Assets/TextMesh Pro/
