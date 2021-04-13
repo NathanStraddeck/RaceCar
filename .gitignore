@@ -61,7 +61,7 @@ crashlytics-build.properties
 # Custom Ignores
 
 Assets/Graphics/
+Assets/Audio/
 Assets/Animation/
-Assets/Mobile Toon Cars Free/
 Assets/devotid/
 Assets/TextMesh Pro/

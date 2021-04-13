@@ -1,54 +1,40 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using TMPro;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController: MonoBehaviour
 {
+    private float moveInput;
+    private float turnInput;
 
-    InputHandler inputHandler;
+    public float fwdSpeed;
+    public float revSpeed;
+    public float turnSpeed;
 
-    private Rigidbody rb;
+    public Rigidbody sphereRB;
 
-    public TMP_Text scoreTxt;
 
-    public float speed = 5;
 
-    public int score = 0;
-
-    // Start is called before the first frame update
     void Start()
     {
- 
-        rb = GetComponent<Rigidbody>();
-        inputHandler = InputHandler.instance;
+        sphereRB.transform.parent = null;
+
     }
 
- 
-    // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-        Vector3 movement = new Vector3(inputHandler.move.x, 0, inputHandler.move.y);
-        rb.AddForce(movement*speed);
-        
+        moveInput = Input.GetAxisRaw("Vertical");
+        turnInput - Input.GetAxisRaw("Horizontal");
+        moveInput *= fwdSpeed > 0 ? fwdSpeed : revSpeed;
+
+        transform.position = sphereRB.transform.position;
+
+
 
     }
-
-    private void OnTriggerEnter(Collider other)
+    private void FixedUpdate()
     {
-        if (other.CompareTag("pickup"))
-        {
-            Destroy(other.gameObject);
-            score++;
-            scoreTxt.SetText("Score: " + score);
-            if (score >= 11)
-            {
-                scoreTxt.SetText("You Won!");
-            }
-        } 
+        sphereRB.AddForce(transform.forward * moveInput, ForceMode.Acceleration);
     }
-
-  
 
 }

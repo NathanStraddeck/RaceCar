@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class InputHandler : MonoBehaviour
 {
-    Controls controls;
+    public static InputHandler instance;
+
+    private Controls controls;
 
     public Vector2 move;
+    public Vector2 look;
 
-    public static InputHandler instance;
 
     private void Awake()
     {
         if (instance != null)
         {
             Destroy(this);
-
         }
         else
         {
@@ -23,6 +24,10 @@ public class InputHandler : MonoBehaviour
         }
 
         controls = new Controls();
+    }
+
+    private void OnEnable()
+    {
         controls.Enable();
     }
 
@@ -33,11 +38,9 @@ public class InputHandler : MonoBehaviour
 
     void Start()
     {
-        //arguement => whatever logic you want to execute
         controls.Movement.Move.performed += controls => move = controls.ReadValue<Vector2>();
+        controls.Movement.Look.performed += controls => look = controls.ReadValue<Vector2>();
 
     }
-
-
 
 }
