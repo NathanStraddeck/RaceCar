@@ -71,6 +71,33 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "Nitro",
+            "id": "e5a94b01-55fd-47c7-ba36-04bdef8bf139",
+            "actions": [
+                {
+                    "name": "Use Nitro",
+                    "type": "Button",
+                    "id": "43146889-0ca7-4d77-a7f7-afd5ffe8059f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "0f3c84cd-0fdc-4074-ac8c-947d8695c817",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Use Nitro",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

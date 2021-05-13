@@ -84,6 +84,33 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Nitro"",
+            ""id"": ""e5a94b01-55fd-47c7-ba36-04bdef8bf139"",
+            ""actions"": [
+                {
+                    ""name"": ""Use Nitro"",
+                    ""type"": ""Button"",
+                    ""id"": ""43146889-0ca7-4d77-a7f7-afd5ffe8059f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""0f3c84cd-0fdc-4074-ac8c-947d8695c817"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Use Nitro"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -91,6 +118,9 @@ public class @Controls : IInputActionCollection, IDisposable
         // Movement
         m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
         m_Movement_Move = m_Movement.FindAction("Move", throwIfNotFound: true);
+        // Nitro
+        m_Nitro = asset.FindActionMap("Nitro", throwIfNotFound: true);
+        m_Nitro_UseNitro = m_Nitro.FindAction("Use Nitro", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -169,8 +199,45 @@ public class @Controls : IInputActionCollection, IDisposable
         }
     }
     public MovementActions @Movement => new MovementActions(this);
+
+    // Nitro
+    private readonly InputActionMap m_Nitro;
+    private INitroActions m_NitroActionsCallbackInterface;
+    private readonly InputAction m_Nitro_UseNitro;
+    public struct NitroActions
+    {
+        private @Controls m_Wrapper;
+        public NitroActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @UseNitro => m_Wrapper.m_Nitro_UseNitro;
+        public InputActionMap Get() { return m_Wrapper.m_Nitro; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(NitroActions set) { return set.Get(); }
+        public void SetCallbacks(INitroActions instance)
+        {
+            if (m_Wrapper.m_NitroActionsCallbackInterface != null)
+            {
+                @UseNitro.started -= m_Wrapper.m_NitroActionsCallbackInterface.OnUseNitro;
+                @UseNitro.performed -= m_Wrapper.m_NitroActionsCallbackInterface.OnUseNitro;
+                @UseNitro.canceled -= m_Wrapper.m_NitroActionsCallbackInterface.OnUseNitro;
+            }
+            m_Wrapper.m_NitroActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @UseNitro.started += instance.OnUseNitro;
+                @UseNitro.performed += instance.OnUseNitro;
+                @UseNitro.canceled += instance.OnUseNitro;
+            }
+        }
+    }
+    public NitroActions @Nitro => new NitroActions(this);
     public interface IMovementActions
     {
         void OnMove(InputAction.CallbackContext context);
+    }
+    public interface INitroActions
+    {
+        void OnUseNitro(InputAction.CallbackContext context);
     }
 }

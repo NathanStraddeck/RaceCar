@@ -7,48 +7,130 @@ using TMPro;
 public class PlayerController : MonoBehaviour
 {
 
-    InputHandler inputHandler;
+    InputHandler input;
 
     private Rigidbody rb;
 
     public TMP_Text scoreTxt;
 
-    public float speed = 5;
+    public float speed = 10;
+
+    private float originalSpeed = 10;
+    private float boostSpeed = 20;
 
     public int score = 0;
 
-    // Start is called before the first frame update
+    //Nitro bar values
+    public float maxNitro = 100;
+    public float currentNitro;
+    public NitroBar Nitro;
+    public int minNitro = 0;
+
+
+    //health bar values
+    public int maxHealth = 5;
+    public int currentHealth;
+    public HealthBar health;
+
+
+    
     void Start()
     {
  
         rb = GetComponent<Rigidbody>();
-        inputHandler = InputHandler.instance;
+        input = InputHandler.instance;
+
+        currentNitro = maxNitro;
+        Nitro.SetMaxNitro(maxNitro);
+
+        currentHealth = maxHealth;
+
+        
     }
 
- 
-    // Update is called once per frame
+    private void Update()
+    {
+        //when space bar press, nitro goes down.
+        if (input.nitroDown&& currentNitro>minNitro)
+        {
+            Debug.Log("Nitro down");
+            LoseNitro(Time.deltaTime * 60);
+
+           speed = boostSpeed;
+
+
+        }
+
+        else
+        {
+            speed = originalSpeed; 
+        }
+    }
+
+
+
+    
+   
+    //movement of the player
     void FixedUpdate()
     {
-        Vector3 movement = new Vector3(inputHandler.move.x, 0, inputHandler.move.y);
-        rb.AddForce(movement*speed);
-        
+        HandleMovement(Time.deltaTime);
+    }
+
+    //movement of the player
+    void HandleMovement(float delta)
+    {
+        Vector3 movement = new Vector3(input.move.x, 0, input.move.y);
+        rb.AddForce(movement * speed);
+    }
+
+    //Method used to lose nitro
+    void LoseNitro(float use)
+    {
+        if (currentNitro>minNitro)
+        {
+            currentNitro -= use;
+            Nitro.SetNitro(currentNitro);
+        }
 
     }
 
-    private void OnTriggerEnter(Collider other)
+
+    //when pick up a coin
+    public void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("pickup"))
         {
             Destroy(other.gameObject);
             score++;
             scoreTxt.SetText("Score: " + score);
-            if (score >= 11)
-            {
-                scoreTxt.SetText("You Won!");
-            }
-        } 
+            
+            //nitro goes up
+            currentNitro += 20;
+            Nitro.SetNitro(currentNitro);
+            
+        }
+
+        //when hit an obstacle
+
+        if (other.CompareTag("obstacle"))
+        {
+            //health goes down by 1
+            TakeDamage(1);
+            
+            Debug.Log("we hit something");
+            
+           
+        }
     }
 
-  
+    //method used to take damage
+void TakeDamage(int damage) {
+
+        currentHealth -= damage;
+        health.Sethealth(currentHealth);
+    }
+    
+
 
 }
