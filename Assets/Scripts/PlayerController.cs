@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController: MonoBehaviour
 {
-    InputHandler input;
+   /* InputHandler input;
 
     private float moveInput;
     private float turnInput;
@@ -53,6 +53,7 @@ public class PlayerController: MonoBehaviour
         {
             sphereRB.drag = airDrag;
         }
+
     }
     private void FixedUpdate()
     {
@@ -65,6 +66,8 @@ public class PlayerController: MonoBehaviour
         {
             sphereRB.AddForce(transform.up * -40f);
         }
-    }
+     
 
+    }
+    */
 }

@@ -11,6 +11,7 @@ public class InputHandler : MonoBehaviour
     public Vector2 move;
     public Vector2 look;
 
+    public bool isBraking;
 
     private void Awake()
     {
@@ -41,6 +42,9 @@ public class InputHandler : MonoBehaviour
         controls.Movement.Move.performed += controls => move = controls.ReadValue<Vector2>();
         controls.Movement.Look.performed += controls => look = controls.ReadValue<Vector2>();
 
+
+        controls.Movement.Brake.performed += controls => isBraking = true;
+        controls.Movement.Brake.canceled += controls => isBraking = false;
     }
 
 }
