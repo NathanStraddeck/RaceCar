@@ -1,17 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using TMPro;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController: MonoBehaviour
 {
+   /* InputHandler input;
 
     InputHandler input;
 
-    private Rigidbody rb;
+    public float airDrag;
+    public float groundDrag;
 
-    public TMP_Text scoreTxt;
+    public float fwdSpeed;
+    public float revSpeed;
+    public float turnSpeed;
+    public LayerMask groundLayer;
 
     public float speed = 10;
 

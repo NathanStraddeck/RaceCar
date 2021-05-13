@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class InputHandler : MonoBehaviour
 {
-    Controls controls;
+    public static InputHandler instance;
+
+    private Controls controls;
 
     public Vector2 move;
+    public Vector2 look;
 
-    public static InputHandler instance;
+    public bool isBraking;
 
     public bool nitroDown = false;
 
@@ -17,7 +20,6 @@ public class InputHandler : MonoBehaviour
         if (instance != null)
         {
             Destroy(this);
-
         }
         else
         {
@@ -25,6 +27,10 @@ public class InputHandler : MonoBehaviour
         }
 
         controls = new Controls();
+    }
+
+    private void OnEnable()
+    {
         controls.Enable();
     }
 
@@ -35,9 +41,12 @@ public class InputHandler : MonoBehaviour
 
     void Start()
     {
-        //arguement => whatever logic you want to execute
         controls.Movement.Move.performed += controls => move = controls.ReadValue<Vector2>();
+        controls.Movement.Look.performed += controls => look = controls.ReadValue<Vector2>();
 
+
+        controls.Movement.Brake.performed += controls => isBraking = true;
+        controls.Movement.Brake.canceled += controls => isBraking = false;
         controls.Nitro.UseNitro.performed += controls =>
         {
             Debug.Log("nitro detected");
@@ -45,7 +54,5 @@ public class InputHandler : MonoBehaviour
         };
         controls.Nitro.UseNitro.canceled += controls => nitroDown = false;
     }
-
-
 
 }
